@@ -1,63 +1,185 @@
-<!DOCTYPE html>
-<html>
-<head>
-      <<img src="ct_logo2.png" alt="students learner" />
-  <style>
-    body {
-      background-image:
-      url('https://i.ibb.co/5ghB9MH5/IMG-20250920-182423.jpg');
-      background-size: 100px;
-  .    background: no-repeat;
-      background-attachment: fixed;
-      font-family: arial,sans-serif;
-    }
-  
-    table {
-      border-collapse: collapse;""
-       width: 100%;
-       margin: 100px auto;
-       border: 10px solid black;
-    }
-    
-    caption {
-      font-size: 20px;
-      font-weight: bold;
-      color: orange;
-      margin-bottom: 20px;
-    }
-    
-    th, td {
-      border: 1px solid orange;
-      padding: 20px;
-      text-align: center;
-    }
-    
-    th {
-      background-color: lightblue;
-    }
-  </style>
- </head>
- <body>
-    <table border="1">
-      <caption>StudentGrades</caption>
-      <tr>
-      <th>name</th>
-      <th>subject</th>
-      <th>grades</th>
-      </tr>
-      <tr>
-        <td>Jepheron Tunghay</td>
-        <td>Math</td>
-        <td>60</td>
-      </tr>
-      <tr>
-        <td>Jeppoy</td>
-        <td>English</td>
-        <td>70</td>
-      </tr>
-      
-    </table>
-   
+<!doctype html>
 
-</body>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Java Variables & Data Types — Randomized 30-item Quiz</title>
+  <style>
+    :root{--bg:#fafafa;--card:#fff;--accent:#0d6efd;--muted:#666}
+    body{font-family:Inter,Segoe UI,Roboto,system-ui,Arial;background:var(--bg);margin:0;padding:24px;color:#111}
+    .container{max-width:1000px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    button{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(13,110,253,.15)}
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.06);margin-bottom:12px}
+    .question{font-weight:600}
+    .choices{margin-top:8px;display:grid;gap:6px}
+    label.choice{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;border:1px solid #eee}
+    .meta{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .score{font-weight:700}
+    .small{font-size:13px;color:var(--muted)}
+    .correct{background:rgba(40,167,69,.08);border-color:rgba(40,167,69,.25)}
+    .incorrect{background:rgba(220,53,69,.06);border-color:rgba(220,53,69,.18)}
+    .answer-key{margin-top:12px;padding:12px;border-radius:8px;background:#f7f9ff}
+    .footer{margin-top:16px;font-size:13px;color:var(--muted)}
+    @media(print){button,.controls,.footer{display:none}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Java Variables & Data Types — Randomized 30-item Quiz</h1>
+      <div class="controls">
+        <button id="shuffleBtn">Shuffle Questions</button>
+        <button id="resetBtn" class="ghost">Reset</button>
+        <button id="checkBtn">Check Answers</button>
+        <button id="toggleKey" class="ghost">Show Answer Key (Teacher)</button>
+        <button id="printBtn" class="ghost">Print</button>
+      </div>
+    </header><div id="quiz"></div>
+
+<div id="result" class="card" style="display:none">
+  <div class="meta"><div class="score">Score: <span id="scoreVal">0</span>/30</div>
+  <div class="small">Correct: <span id="correctCount">0</span> — Incorrect: <span id="incorrectCount">0</span></div></div>
+  <div id="feedback" class="small"></div>
+</div>
+
+<div id="answerKey" class="answer-key" style="display:none"></div>
+
+<div class="footer">Generated for midterm practice — questions randomized per student. Use the "Show Answer Key" button to reveal teacher answers.</div>
+
+  </div>  <script>
+    // Questions array (30) with choices and correct letter
+    const QUESTIONS = [
+      {q: "What is a variable in Java?", choices: ["A. A fixed value that cannot change","B. A name assigned to a memory location to store a value","C. A keyword used for looping","D. A method for printing data"], answer: 'B'},
+      {q: "Which of the following correctly declares a variable?", choices: ["A. int = age 18;","B. age int = 18;","C. int age = 18;","D. int 18 = age;"], answer: 'C'},
+      {q: "What does the term data type mean?", choices: ["A. A command used to repeat instructions","B. Defines the type of value a variable can store","C. A method for creating output","D. A loop in Java"], answer: 'B'},
+      {q: "Which of the following is a valid variable name?", choices: ["A. 1stNumber","B. class","C. total value","D. _totalValue"], answer: 'D'},
+      {q: "Variable names in Java are _______.", choices: ["A. Not case-sensitive","B. Case-sensitive","C. Always uppercase","D. Automatically capitalized"], answer: 'B'},
+      {q: "Which of the following is NOT allowed as a variable name?", choices: ["A. _sum","B. $amount","C. total$","D. if"], answer: 'D'},
+      {q: "What is the correct syntax for declaring multiple variables of the same type?", choices: ["A. int x = 1, y = 2, z = 3;","B. int x = 1; int y = 2; int z = 3","C. x = 1, y = 2, z = 3;","D. int (x=1, y=2, z=3);"], answer: 'A'},
+      {q: "Java is a _______ typed language.", choices: ["A. Dynamically","B. Loosely","C. Statically","D. Weakly"], answer: 'C'},
+      {q: "Which keyword is used to make a variable constant?", choices: ["A. final","B. const","C. fixed","D. static"], answer: 'A'},
+      {q: "Which of the following is a primitive data type?", choices: ["A. String","B. Array","C. int","D. Class"], answer: 'C'},
+      {q: "What is the size of a byte data type?", choices: ["A. 4 bits","B. 8 bits","C. 16 bits","D. 32 bits"], answer: 'B'},
+      {q: "The boolean data type can store _______.", choices: ["A. Only true or false","B. Any integer","C. Decimal numbers","D. Characters"], answer: 'A'},
+      {q: "Which data type is most commonly used for integers?", choices: ["A. short","B. long","C. int","D. byte"], answer: 'C'},
+      {q: "Which of these data types requires an f at the end of its value?", choices: ["A. int","B. float","C. double","D. char"], answer: 'B'},
+      {q: "What is the correct way to declare a character variable?", choices: ["A. char letter = \"A\";","B. char letter = 'A';","C. String letter = A;","D. character letter = 'A';"], answer: 'B'},
+      {q: "What is the output of this code:\nboolean isPassed = true; System.out.println(isPassed);", choices: ["A. passed","B. 1","C. true","D. yes"], answer: 'C'},
+      {q: "Which of the following is NOT a primitive data type?", choices: ["A. boolean","B. double","C. String","D. char"], answer: 'C'},
+      {q: "Which of these stores a memory address rather than a value?", choices: ["A. Primitive data types","B. Non-primitive data types","C. Constant variables","D. Integers"], answer: 'B'},
+      {q: "Which of the following is a non-primitive data type?", choices: ["A. float","B. boolean","C. String","D. char"], answer: 'C'},
+      {q: "Example of type casting from smaller to larger data type:", choices: ["A. double num = (int)10.5;","B. int num = 10; double result = num;","C. int num = (double)10;","D. double num = 10; int result = num;"], answer: 'B'},
+      {q: "What is narrowing casting?", choices: ["A. Converting from smaller to larger data type","B. Automatically changing data type","C. Manually converting larger to smaller data type","D. Adding variables together"], answer: 'C'},
+      {q: "What will happen if you try to modify a final variable?", choices: ["A. It updates successfully","B. It prints a warning","C. It causes a compile-time error","D. It automatically resets"], answer: 'C'},
+      {q: "Which symbol is used for single characters in Java?", choices: ["A. \" \"","B. '\\'','"C. ( )","D. { }"], answer: 'B'},
+      {q: "What is the value range of byte?", choices: ["A. -255 to 255","B. -128 to 127","C. -100 to 100","D. -32768 to 32767"], answer: 'B'},
+      {q: "Which of these is a correct example of a String variable?", choices: ["A. String name = \"Stephen\";","B. string name = Stephen;","C. char name = \"Stephen\";","D. String name = 'Stephen';"], answer: 'A'},
+      {q: "What is the output of System.out.println(\"Age: \" + 18);?", choices: ["A. Age: +18","B. Age: 18","C. 18","D. Error"], answer: 'B'},
+      {q: "The keyword final is used for _______.", choices: ["A. Declaring constant variables","B. Creating loops","C. Casting data","D. Declaring functions"], answer: 'A'},
+      {q: "Which line correctly declares and initializes multiple strings?", choices: ["A. String fname, lname, mname = \"John\", \"Doe\", \"P\";","B. String fname = \"John\", lname = \"Doe\", mname = \"P\";","C. String (fname = \"John\", lname = \"Doe\", mname = \"P\");","D. String \"John\", \"Doe\", \"P\";"], answer: 'B'},
+      {q: "The System.out.println() statement is used to _______.", choices: ["A. Input data","B. Store data","C. Output/display data","D. Delete data"], answer: 'C'},
+      {q: "Which of the following statements best describes Java’s type system?", choices: ["A. Variables can change type at runtime","B. All variables must have a declared type before use","C. Java automatically assigns data types","D. Data types are optional"], answer: 'B'}
+    ];
+
+    // helper functions
+    function shuffle(array){
+      for(let i = array.length -1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // render quiz
+    let currentOrder = Array.from({length: QUESTIONS.length}, (_,i)=>i);
+    function renderQuiz(){
+      const container = document.getElementById('quiz');
+      container.innerHTML = '';
+      currentOrder.forEach((qi, idx)=>{
+        const q = QUESTIONS[qi];
+        const card = document.createElement('div'); card.className='card';
+        const qnum = idx+1;
+        card.innerHTML = `<div class="question">${qnum}. ${escapeHtml(q.q)}</div>`;
+        const choicesDiv = document.createElement('div'); choicesDiv.className='choices';
+        q.choices.forEach(choice => {
+          const letter = choice.split('.')[0];
+          const label = document.createElement('label'); label.className='choice';
+          label.innerHTML = `<input type="radio" name="q${qnum}" value="${letter}"> <span>${escapeHtml(choice)}</span>`;
+          choicesDiv.appendChild(label);
+        });
+        card.appendChild(choicesDiv);
+        container.appendChild(card);
+      });
+      // hide results and answer key
+      document.getElementById('result').style.display='none';
+      document.getElementById('answerKey').style.display='none';
+      document.getElementById('toggleKey').textContent = 'Show Answer Key (Teacher)';
+    }
+
+    function escapeHtml(text){
+      return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function checkAnswers(){
+      let correct=0, incorrect=0;
+      const cards = document.querySelectorAll('#quiz .card');
+      cards.forEach((card, idx)=>{
+        const qObj = QUESTIONS[currentOrder[idx]];
+        const selected = card.querySelector('input[type=radio]:checked');
+        // clear classes
+        card.classList.remove('correct','incorrect');
+        if(selected){
+          if(selected.value === qObj.answer){ correct++; card.classList.add('correct'); }
+          else { incorrect++; card.classList.add('incorrect'); }
+        } else {
+          incorrect++; card.classList.add('incorrect');
+        }
+      });
+      const scoreEl = document.getElementById('scoreVal');
+      const correctEl = document.getElementById('correctCount');
+      const incorrectEl = document.getElementById('incorrectCount');
+      scoreEl.textContent = correct;
+      correctEl.textContent = correct;
+      incorrectEl.textContent = incorrect;
+      document.getElementById('result').style.display='block';
+      const feedback = document.getElementById('feedback');
+      feedback.textContent = correct >= 24 ? 'Great job! Ready for the midterm.' : (correct >= 15 ? 'Not bad — review weak areas.' : 'You should review the material and try again.');
+    }
+
+    function buildAnswerKey(){
+      const keyDiv = document.getElementById('answerKey');
+      let html = '<strong>Answer Key (Teacher)</strong><ol>';
+      QUESTIONS.forEach((q, idx)=>{
+        html += `<li>${escapeHtml(q.q)} — <strong>${q.answer}</strong></li>`;
+      });
+      html += '</ol>';
+      keyDiv.innerHTML = html;
+    }
+
+    // Buttons
+    document.getElementById('shuffleBtn').addEventListener('click', ()=>{
+      currentOrder = shuffle(currentOrder.slice());
+      renderQuiz();
+    });
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      currentOrder = Array.from({length: QUESTIONS.length}, (_,i)=>i);
+      renderQuiz();
+    });
+    document.getElementById('checkBtn').addEventListener('click', ()=>{ checkAnswers(); });
+    document.getElementById('toggleKey').addEventListener('click', (e)=>{
+      const keyDiv = document.getElementById('answerKey');
+      if(keyDiv.style.display==='none' || keyDiv.style.display===''){
+        buildAnswerKey(); keyDiv.style.display='block'; e.target.textContent = 'Hide Answer Key (Teacher)';
+      } else { keyDiv.style.display='none'; e.target.textContent = 'Show Answer Key (Teacher)'; }
+    });
+    document.getElementById('printBtn').addEventListener('click', ()=>{ window.print(); });
+
+    // init
+    renderQuiz();
+  </script></body>
 </html>
